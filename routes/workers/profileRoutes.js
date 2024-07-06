@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Profile = require("../models/Profile");
-const { jwtAuthMiddleware, generateToken } = require("../jwt");
+const Profile = require("../../models/workers/Profile");
+const { jwtAuthMiddleware, generateToken } = require("../../jwt");
 
 //PROFILE API'S
 //create profile api or SIGNUP

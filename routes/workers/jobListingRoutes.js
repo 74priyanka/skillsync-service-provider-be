@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const JobListing = require("./../models/JobListing");
+const JobListing = require("../../models/workers/JobListing");
 
 //JOB LISTING APIs
 //create job listing

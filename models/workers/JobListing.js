@@ -23,7 +23,7 @@ const jobListingSchema = new mongoose.Schema({
     required: true,
   },
   availability: {
-    type: String,
+    type: String, //dd,mm,yyyy  time
     required: true,
   },
   price: {

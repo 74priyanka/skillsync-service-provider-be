@@ -5,7 +5,6 @@ const JobRequests = require("../../models/workers/JobRequests");
 
 //JOB REQUESTS APIS
 
-//JOB REQUEST API'S
 //create job requests (post)
 router.post("/createJobRequests", async (req, res) => {
   try {
@@ -25,7 +24,7 @@ router.post("/createJobRequests", async (req, res) => {
 });
 
 //accept job requests
-router.post("/jobRequests/:id/accept", async (req, res) => {
+router.post("/serviceRequests/:id/accept", async (req, res) => {
   try {
     const response = await JobRequests.findOneAndUpdate(
       { jobRequestId: req.params.id },
@@ -44,7 +43,7 @@ router.post("/jobRequests/:id/accept", async (req, res) => {
 });
 
 //reject job requests
-router.post("/jobRequests/:id/reject", async (req, res) => {
+router.post("/serviceRequests/:id/reject", async (req, res) => {
   try {
     const response = await JobRequests.findOneAndUpdate(
       { jobRequestId: req.params.id },
@@ -69,6 +68,22 @@ router.get("/fetchJobRequests", async (req, res) => {
     res.json({ status: "success", data });
   } catch (error) {
     res.status(400).json({ status: "error", message: error.message });
+  }
+});
+
+//fetch single job requests by ID
+router.get("/fetchJobRequests/:id", async (req, res) => {
+  try {
+    const jobRequestId = req.params.id;
+    const data = await JobRequests.findById(jobRequestId);
+    if (!data) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "job request not found" });
+    }
+    res.status(200).json({ status: "success", data: data });
+  } catch (error) {
+    res.status(500).json({ status: "error", message: error.message });
   }
 });
 

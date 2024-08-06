@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const profileSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    // required: true,
   },
 
   userName: {
@@ -29,11 +29,9 @@ const profileSchema = new mongoose.Schema({
   },
   contact: {
     type: String,
-    required: true,
+    // required: true,
   },
-  //   date_of_birth: {
-  //     type: Date,
-  //   },
+
   nationality: {
     type: String,
   },
@@ -47,21 +45,18 @@ const profileSchema = new mongoose.Schema({
   address: {
     type: String,
   },
-  city: {
-    type: String,
-    required: true,
-  },
+
   state: {
     type: String,
-    required: true,
+    // required: true,
   },
   country: {
     type: String,
-    required: true,
+    // required: true,
   },
   pincode: {
     type: Number,
-    required: true,
+    // required: true,
   },
   education: {
     type: String,
@@ -69,18 +64,18 @@ const profileSchema = new mongoose.Schema({
   skills: {
     type: [String],
     enum: ["pipe installation", "faucet repair", "plumbing"],
-    required: true,
+    // required: true,
   },
   certifications: {
     type: [String],
     enum: ["Certified Electrician", "Licensed Plumber"],
-    required: true,
+    // required: true,
   },
 
   identity_verification: {
     type: [String],
     enum: ["idCard", "aadharCard", "panCard", "addressProof"],
-    required: true,
+    // required: true,
   },
 });
 
@@ -102,10 +97,10 @@ profileSchema.pre("save", async function (next) {
   }
 });
 
-profileSchema.methods.comparePassword = async function (candidatePssword) {
+profileSchema.methods.comparePassword = async function (candidatePassword) {
   try {
     //use bcrypt to compare the provided password with the hashed password
-    const isMatch = await bcrypt.compare(candidatePssword, this.password);
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
   } catch (err) {
     throw err;

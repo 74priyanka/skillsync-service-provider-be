@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
-//create a job request schema
-const jobRequestsSchema = new mongoose.Schema({
-  jobRequestId: {
+//create a service request schema
+const serviceRequestsSchema = new mongoose.Schema({
+  serviceRequestId: {
     type: String,
     required: true,
     unique: true,
   },
 
-  customerid: {
+  customerId: {
     type: String,
     required: true,
   },
@@ -55,17 +55,10 @@ const jobRequestsSchema = new mongoose.Schema({
     required: true,
     default: "Pending",
   },
-  acceptedBy: {
-    providerId: { type: String },
-    name: { type: String },
-    contact: { type: String },
-  },
-  rejectedBy: {
-    providerId: { type: String },
-    name: { type: String },
-    reason: { type: String },
-  },
 });
-//create a jobrequest model
-const JobRequests = mongoose.model("JobRequests", jobRequestsSchema);
-module.exports = JobRequests;
+//create a serviceRequest model
+const serviceRequests = mongoose.model(
+  "serviceRequests",
+  serviceRequestsSchema
+);
+module.exports = serviceRequests;

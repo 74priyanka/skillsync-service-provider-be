@@ -5,13 +5,49 @@ const serviceRequests = require("../../models/customers/serviceRequests");
 //create service requests (post)
 router.post("/createServiceRequests", async (req, res) => {
   try {
-    const data = req.body; //assuming the request body contains the serviceRequest data
+    const {
+      name,
+      contact,
+      service_requested,
+      description,
+      requestedDate,
+      requestedTime,
+      address,
+      estimatedDuration,
+      price,
+    } = req.body; //assuming the request body contains the serviceRequest data
+
+    if (
+      !name ||
+      !contact ||
+      !service_requested ||
+      !description ||
+      !requestedDate ||
+      !requestedTime ||
+      !address ||
+      !estimatedDuration ||
+      !price
+    ) {
+      return res
+        .status(400)
+        .json({ status: "error", message: "All fields are required" });
+    }
 
     //create a new serviceRequest document using the mongoose model
-    const newJobRequests = new serviceRequests(data);
+    const newServiceRequests = new serviceRequests({
+      name,
+      contact,
+      service_requested,
+      description,
+      requestedDate,
+      requestedTime,
+      address,
+      estimatedDuration,
+      price,
+    });
 
     //save the new jobRequest to the database
-    const response = await newJobRequests.save();
+    const response = await newServiceRequests.save();
     console.log("service request is created");
     res.status(200).json({ status: "success", response });
   } catch (err) {

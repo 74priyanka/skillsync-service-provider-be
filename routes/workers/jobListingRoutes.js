@@ -7,20 +7,48 @@ const JobListing = require("../../models/workers/JobListing");
 //create job listing
 router.post("/createJobListing", async (req, res) => {
   try {
-    const data = req.body; //assuming the request body contains the joblist data
+    const {
+      category,
+      service_availability_duration,
+      date,
+      price,
+      job_description,
+      status,
+    } = req.body;
 
-    //create a new jobList document using the mongoose model
-    const newJobListing = new JobListing(data);
+    // Basic validation
+    if (
+      !category ||
+      !service_availability_duration ||
+      !date ||
+      !price ||
+      !job_description
+    ) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
 
-    //save the new jobList to the database
+    // Create a new job listing document
+    const newJobListing = new JobListing({
+      category,
+      service_availability_duration,
+      date,
+      price,
+      job_description,
+      status: status || "Pending", // Set default status if not provided
+    });
+
+    // Save the job listing to the database
     const response = await newJobListing.save();
-    console.log("job listing is created");
-    res.status(200).json(response);
+    console.log("Job listing created:", response);
+    res.status(201).json(response);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "internal server error" });
+    console.error("Error creating job listing:", err.message); // Improved error logging
+    res
+      .status(500)
+      .json({ error: "Internal server error", details: err.message }); // Include error details in response
   }
 });
+
 //get job listing
 router.get("/getJobListing", async (req, res) => {
   try {
@@ -44,7 +72,7 @@ router.put("/updateJobListing/:id", async (req, res) => {
     //update joblist in the database
     const response = await JobListing.findByIdAndUpdate(
       jobListingId,
-      updateJobListingData,
+      { $set: updateJobListingData },
       {
         new: true, //return updated document
         runValidators: true, //run mongoose validation

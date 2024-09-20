@@ -83,11 +83,11 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     //extract username and password from request body
-    const { userName, password } = req.body;
+    const { email, password } = req.body;
 
-    //find user by username
+    //find user by email
     const customersProfile = await customerProfile.findOne({
-      userName: userName,
+      email: email,
     });
 
     //if user does not exist or password does not match , return error
@@ -95,12 +95,12 @@ router.post("/login", async (req, res) => {
       !customersProfile ||
       !(await customersProfile.comparePassword(password))
     ) {
-      return res.status(401).json({ error: "invalid username or password" });
+      return res.status(401).json({ error: "invalid email or password" });
     }
     //payload
     const payload = {
       id: customersProfile.id,
-      userName: customersProfile.userName,
+      email: customersProfile.email,
     };
     //generate a token using the payload
     const token = generateToken(payload);
@@ -125,6 +125,18 @@ router.get("/profile", jwtAuthMiddleware, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+//get profile
+router.get("/getCustomerProfile", async (req, res) => {
+  try {
+    //get the profile from database
+    const data = await customerProfile.find();
+    console.log("profile data is fetched");
+    res.status(200).json(data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "internal server error" });
   }
 });
 

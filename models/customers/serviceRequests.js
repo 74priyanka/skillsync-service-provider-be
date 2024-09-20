@@ -2,16 +2,6 @@ const mongoose = require("mongoose");
 
 //create a service request schema
 const serviceRequestsSchema = new mongoose.Schema({
-  serviceRequestId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-
-  customerId: {
-    type: String,
-    required: true,
-  },
   name: {
     type: String,
     required: true,
@@ -37,7 +27,7 @@ const serviceRequestsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  location: {
+  address: {
     type: String,
     required: true,
   },

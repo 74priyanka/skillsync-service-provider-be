@@ -2,33 +2,35 @@ const mongoose = require("mongoose");
 
 //create a job listing schema
 const jobListingSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-  },
+  // id: {
+  //   type: Number,
+  //   required: true,
+  // },
   category: {
     type: String,
     required: true,
   },
-  service_type: {
+  service_availability_duration: {
     type: String,
     required: true,
   },
-  duration: {
+  date: {
     type: String,
     required: true,
   },
-  service_provide_area: {
-    type: String,
-    required: true,
-  },
-  availability: {
-    type: String, //dd,mm,yyyy  time
-    required: true,
-  },
+
   price: {
     type: Number,
     required: true,
+  },
+  job_description: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+    default: "Pending",
   },
 });
 

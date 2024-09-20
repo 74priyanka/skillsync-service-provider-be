@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-//define the service provider profile schema
+//define the worker profile schema
 const profileSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -61,6 +61,22 @@ const profileSchema = new mongoose.Schema({
   education: {
     type: String,
   },
+
+  //years of experience : { type : }
+  //change skills to experience
+  //  experience : {
+  //  1 : {
+  //   title: "",
+  //   yearsOfExperience : "4",
+  //   description : ""
+  //  },
+  //  2 : {
+  //   title: "",
+  //   yearsOfExperience : "4",
+  //   description : ""
+  //  },
+  // }
+
   skills: {
     type: [String],
     enum: ["pipe installation", "faucet repair", "plumbing"],

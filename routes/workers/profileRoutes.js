@@ -98,10 +98,11 @@ router.post("/login", async (req, res) => {
       id: profile.id,
       email: profile.email,
     };
+
     //generate a token using the payload
     const token = generateToken(payload);
     console.log("token is:", token);
-    res.status(200).json({ token: token });
+    res.status(200).json({ token: token, profileId: profile.id });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "internal server error" });
@@ -121,6 +122,22 @@ router.get("/profile", jwtAuthMiddleware, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/profile/:id", async (req, res) => {
+  try {
+    const profileId = req.params.id; // Extract the ID from the request URL
+    const profile = await Profile.findById(profileId); // Find profile by ID
+
+    if (!profile) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    res.json(profile); // Return the profile data
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

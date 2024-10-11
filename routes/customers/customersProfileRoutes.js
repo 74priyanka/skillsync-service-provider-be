@@ -114,6 +114,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//LOGOUT ROUTE
+router.post("/logout", async (req, res) => {
+  try {
+    res.status(200).json({ message: "Successfully logged out" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //PROFILE ROUTE (getting profile of a user using token )
 router.get("/profile", jwtAuthMiddleware, async (req, res) => {
   try {

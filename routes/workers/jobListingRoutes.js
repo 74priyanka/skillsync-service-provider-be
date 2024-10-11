@@ -13,6 +13,7 @@ router.post("/createJobListing", async (req, res) => {
       date,
       price,
       job_description,
+      userId,
       status,
     } = req.body;
 
@@ -22,7 +23,8 @@ router.post("/createJobListing", async (req, res) => {
       !service_availability_duration ||
       !date ||
       !price ||
-      !job_description
+      !job_description ||
+      !userId
     ) {
       return res.status(400).json({ error: "All fields are required" });
     }
@@ -34,6 +36,7 @@ router.post("/createJobListing", async (req, res) => {
       date,
       price,
       job_description,
+      userId,
       status: status || "Pending", // Set default status if not provided
     });
 
@@ -60,6 +63,26 @@ router.get("/getJobListing", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "internal server error" });
+  }
+});
+
+//get job listing by particular profileId
+router.get("/getJobListingByWorker/:userId", async (req, res) => {
+  const { userId } = req.params; //extract userId from URL parameters
+
+  try {
+    //find job listings where the userId matches the worker's profileId
+    const data = await JobListing.find({ userId });
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No job listings found for this profileId" });
+    }
+    console.log("Job listings fetched for worker", userId);
+    res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

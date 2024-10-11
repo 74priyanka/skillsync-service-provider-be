@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 //create a job listing schema
 const jobListingSchema = new mongoose.Schema({
-  // id: {
-  //   type: Number,
-  //   required: true,
-  // },
   category: {
     type: String,
     required: true,
@@ -21,6 +17,10 @@ const jobListingSchema = new mongoose.Schema({
 
   price: {
     type: Number,
+    required: true,
+  },
+  userId: {
+    type: String,
     required: true,
   },
   job_description: {

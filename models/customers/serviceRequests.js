@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 //create a service request schema
 const serviceRequestsSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,

@@ -6,6 +6,7 @@ const serviceRequests = require("../../models/customers/serviceRequests");
 router.post("/createServiceRequests", async (req, res) => {
   try {
     const {
+      userId,
       name,
       contact,
       service_requested,
@@ -18,6 +19,7 @@ router.post("/createServiceRequests", async (req, res) => {
     } = req.body; //assuming the request body contains the serviceRequest data
 
     if (
+      !userId ||
       !name ||
       !contact ||
       !service_requested ||
@@ -35,6 +37,7 @@ router.post("/createServiceRequests", async (req, res) => {
 
     //create a new serviceRequest document using the mongoose model
     const newServiceRequests = new serviceRequests({
+      userId,
       name,
       contact,
       service_requested,
@@ -68,12 +71,12 @@ router.get("/getServiceRequests", async (req, res) => {
 
 //fetch single service requests by ID
 // Fetch a single service request by ID
-router.get("/getServiceRequests/:id", async (req, res) => {
+router.get("/getServiceRequestsByCustomer/:userId", async (req, res) => {
   try {
-    const serviceRequestId = req.params.id; // extract the id from URL parameter
+    const { userId } = req.params; // extract the id from URL parameter
 
     // Find the service request by ID
-    const data = await serviceRequests.findById(serviceRequestId);
+    const data = await serviceRequests.find({ userId });
 
     if (!data) {
       return res

@@ -24,7 +24,8 @@ router.post("/createJobListing", async (req, res) => {
       !date ||
       !price ||
       !job_description ||
-      !userId
+      !userId ||
+      !status
     ) {
       return res.status(400).json({ error: "All fields are required" });
     }

@@ -16,6 +16,7 @@ router.post("/createServiceRequests", async (req, res) => {
       address,
       estimatedDuration,
       price,
+      status,
     } = req.body; //assuming the request body contains the serviceRequest data
 
     if (
@@ -28,7 +29,8 @@ router.post("/createServiceRequests", async (req, res) => {
       !requestedTime ||
       !address ||
       !estimatedDuration ||
-      !price
+      !price ||
+      !status
     ) {
       return res
         .status(400)
@@ -47,6 +49,7 @@ router.post("/createServiceRequests", async (req, res) => {
       address,
       estimatedDuration,
       price,
+      status: status || "Pending",
     });
 
     //save the new jobRequest to the database

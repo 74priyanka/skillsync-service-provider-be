@@ -8,9 +8,11 @@ const JobListing = require("../../models/workers/JobListing");
 router.post("/createJobListing", async (req, res) => {
   try {
     const {
+      name,
       category,
       service_availability_duration,
       date,
+      contact,
       price,
       job_description,
       userId,
@@ -19,9 +21,11 @@ router.post("/createJobListing", async (req, res) => {
 
     // Basic validation
     if (
+      !name ||
       !category ||
       !service_availability_duration ||
       !date ||
+      !contact ||
       !price ||
       !job_description ||
       !userId ||
@@ -32,9 +36,11 @@ router.post("/createJobListing", async (req, res) => {
 
     // Create a new job listing document
     const newJobListing = new JobListing({
+      name,
       category,
       service_availability_duration,
       date,
+      contact,
       price,
       job_description,
       userId,

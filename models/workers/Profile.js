@@ -62,21 +62,6 @@ const profileSchema = new mongoose.Schema({
     type: String,
   },
 
-  //years of experience : { type : }
-  //change skills to experience
-  //  experience : {
-  //  1 : {
-  //   title: "",
-  //   yearsOfExperience : "4",
-  //   description : ""
-  //  },
-  //  2 : {
-  //   title: "",
-  //   yearsOfExperience : "4",
-  //   description : ""
-  //  },
-  // }
-
   skills: {
     type: [String],
     enum: ["pipe installation", "faucet repair", "plumbing"],

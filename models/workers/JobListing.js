@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 //create a job listing schema
 const jobListingSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   category: {
     type: String,
     required: true,
@@ -11,6 +15,10 @@ const jobListingSchema = new mongoose.Schema({
     required: true,
   },
   date: {
+    type: String,
+    required: true,
+  },
+  contact: {
     type: String,
     required: true,
   },

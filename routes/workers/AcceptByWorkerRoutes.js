@@ -6,13 +6,11 @@ const AcceptByWorker = require("../../models/workers/AcceptByWorker");
 
 // POST route for a worker accepting a service request
 router.post("/accept/byWorker", async (req, res) => {
-  const { workerId, serviceRequestId } = req.body;
-  console.log("Request Body:", req.body);
+  const { workerId, serviceRequestId, action } = req.body;
 
   try {
     // Fetch worker details
     const workerProfile = await Profile.findById(workerId);
-    console.log("Worker Profile:", workerProfile);
     if (!workerProfile) {
       return res.status(404).json({ msg: "Worker not found" });
     }
@@ -24,26 +22,28 @@ router.post("/accept/byWorker", async (req, res) => {
     }
 
     // Check if the service request is already accepted
-    if (serviceRequest.status === "Accepted") {
+    if (serviceRequest.status === "Accepted" && action === "Accepted") {
       return res.status(400).json({ msg: "Service request already accepted" });
     }
 
     // Create a new record in the AcceptByWorker model
     const acceptByWorker = new AcceptByWorker({
       posted_by_customer_id: serviceRequest.userId, // customer ID
+      service_request_name: serviceRequest.service_requested,
       service_request_id: serviceRequestId, // service request ID
-      accepted_by_worker_name: workerProfile.userName, // fetch worker name from job listing
+      accepted_by_worker_name: workerProfile.name, // fetch worker name from job listing
       accepted_by_worker_id: workerId, // worker ID
       accepted_by_worker_phone_number: workerProfile.contact, // fetch worker contact from job listing
-      accepted_by_worker_skills: workerProfile.skills, // worker skills
-      accepted_by_worker_certifications: workerProfile.certifications, // worker certifications
+      accepted_by_worker_skills: workerProfile.skills,
     });
 
     // Save the accept record to the database
-    await acceptByWorker.save();
+    if (action === "Accepted") {
+      await acceptByWorker.save();
+    }
 
     // Update service request status to 'Accepted'
-    serviceRequest.status = "Accepted";
+    serviceRequest.status = action || "Accepted";
     await serviceRequest.save();
 
     return res

@@ -15,7 +15,6 @@ router.post("/createJobRequests", async (req, res) => {
 
     //save the new jobRequest to the database
     const response = await newJobRequests.save();
-    console.log("job request is created");
     res.status(200).json({ status: "success", response });
   } catch (err) {
     console.log(err);

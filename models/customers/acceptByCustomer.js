@@ -6,6 +6,10 @@ const acceptByCustomerSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
+  job_posting_category: {
+    type: String,
+    required: true,
+  },
   job_posting_id: {
     type: String,
     required: true,

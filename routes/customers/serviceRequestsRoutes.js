@@ -54,7 +54,6 @@ router.post("/createServiceRequests", async (req, res) => {
 
     //save the new jobRequest to the database
     const response = await newServiceRequests.save();
-    console.log("service request is created");
     res.status(200).json({ status: "success", response });
   } catch (err) {
     console.log(err);
@@ -111,7 +110,7 @@ router.put("/updateServiceRequests/:id", async (req, res) => {
     if (!response) {
       return res.status(404).json({ error: " customer profile not found" });
     }
-    console.log("customer profile data is updated");
+
     res.status(200).json(response);
   } catch (err) {
     console.log(err);
@@ -129,7 +128,7 @@ router.delete("/deleteServiceRequests/:id", async (req, res) => {
     if (!response) {
       return res.status(404).json({ error: "service request not found" });
     }
-    console.log(" service request is deleted");
+
     res.status(200).json({
       message: " service request deleted successfully",
     });

@@ -29,7 +29,6 @@ router.get("/fetchAllAcceptedServiceRequests/:customerId", async (req, res) => {
 //Confirmation by customer
 router.put("/confirmByCustomer/:requestId", async (req, res) => {
   const { requestId } = req.params; //extract requestId from URL
-  console.log("request id", requestId);
 
   try {
     const updatedRequest = await serviceRequests.findByIdAndUpdate(

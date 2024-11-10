@@ -14,18 +14,15 @@ router.post("/register", async (req, res) => {
 
     //save the new profile to the database
     const response = await newProfile.save();
-    console.log("profile data is saved");
 
     //payload
     const payload = {
       id: response.id,
-      userName: response.userName,
+      name: response.name,
     };
 
-    console.log(JSON.stringify(payload));
     //generate a token using the payload
     const token = generateToken(payload);
-    console.log("token is:", token);
 
     res.status(200).json({ response: response, token: token });
   } catch (err) {
@@ -38,37 +35,43 @@ router.post("/register", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   try {
-    const { userName, email, password } = req.body;
+    const { name, email, password, contact, skills } = req.body;
 
     // Validate the input
-    if (!userName || !email || !password) {
-      return res.status(400).json({ error: "All fields are required" });
+    if (!name || !email || !password || !contact || !skills || !skills.length) {
+      return res
+        .status(400)
+        .json({ error: "All fields, including skills, are required" });
     }
 
-    // Check if the username or email already exists
+    // Check if the name or email already exists
     const existingProfile = await Profile.findOne({
-      $or: [{ userName }, { email }],
+      $or: [{ name }, { email }],
     });
     if (existingProfile) {
-      return res.status(400).json({ error: "Username or email already taken" });
+      return res.status(400).json({ error: "name or email already taken" });
     }
 
     // Create a new profile document
-    const newProfile = new Profile({ userName, email, password });
+    const newProfile = new Profile({
+      name,
+      email,
+      password,
+      contact,
+      skills, // Include the skills field
+    });
 
     // Save the new profile to the database
     const response = await newProfile.save();
-    console.log("Profile data is saved");
 
     // Payload for token generation
     const payload = {
       id: response.id,
-      userName: response.userName,
+      name: response.name,
     };
 
     // Generate a token using the payload
     const token = generateToken(payload);
-    console.log("Token is:", token);
 
     res.status(201).json({ response: response, token: token });
   } catch (err) {
@@ -101,7 +104,6 @@ router.post("/login", async (req, res) => {
 
     //generate a token using the payload
     const token = generateToken(payload);
-    console.log("token is:", token);
     res.status(200).json({ token: token, profileId: profile.id });
   } catch (err) {
     console.error(err);
@@ -123,7 +125,6 @@ router.post("/logout", async (req, res) => {
 router.get("/profile", jwtAuthMiddleware, async (req, res) => {
   try {
     const userData = req.user;
-    console.log("user data : ", userData);
 
     const userId = userData.id;
     const user = await Profile.findById(userId);
@@ -156,7 +157,6 @@ router.get("/getProfile", async (req, res) => {
   try {
     //get the profile from database
     const data = await Profile.find();
-    console.log("profile data is fetched");
     res.status(200).json(data);
   } catch (err) {
     console.log(err);
@@ -181,7 +181,6 @@ router.put("/updateProfile/:id", async (req, res) => {
     if (!response) {
       return res.status(404).json({ error: "profile not found" });
     }
-    console.log("profile data is updated");
     res.status(200).json(response);
   } catch (err) {
     console.log(err);
@@ -199,7 +198,6 @@ router.delete("/deleteProfile/:id", async (req, res) => {
     if (!response) {
       return res.status(404).json({ error: "profile not found" });
     }
-    console.log("profile data is deleted");
     res.status(200).json({
       message: "profile deleted successfully",
     });

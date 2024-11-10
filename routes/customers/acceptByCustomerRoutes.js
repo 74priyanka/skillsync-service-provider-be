@@ -6,34 +6,41 @@ const acceptByCustomer = require("../../models/customers/acceptByCustomer");
 
 //POST route for a customer to accept a job posting(listing)
 router.post("/accept/byCustomer", async (req, res) => {
-  const { customerId, jobListingId } = req.body;
-  console.log("Request Body:", req.body);
+  const { customerId, jobListingId, action } = req.body;
 
   try {
     //fetch customer details
     const customer = await customerProfile.findById(customerId);
-    console.log("customer profile ", customer);
     if (!customer)
       return res.status(404).json({ message: "Customer not found" });
 
     //fetch job listing details
     const jobListing = await JobListing.findById(jobListingId);
-    console.log("job listing ", jobListing);
     if (!jobListing) {
       return res.status(404).json({ message: "Job listing not found" });
+    }
+
+    // Check if the job posting is already accepted
+    if (jobListing.status === "Accepted" && action === "Accepted") {
+      return res.status(400).json({ msg: "Job Posting already accepted" });
     }
 
     //create a new record in the AcceptByCustomer model
     const newAcceptByCustomer = new acceptByCustomer({
       posted_by_worker_id: jobListing.userId,
+      job_posting_category: jobListing.category,
       job_posting_id: jobListingId,
-      accepted_by_customer_name: customer.userName,
+      accepted_by_customer_name: customer.name,
       accepted_by_customer_id: customerId,
       accepted_by_customer_phone_number: customer.contact,
     });
-    await newAcceptByCustomer.save();
 
-    (jobListing.status = "Accepted"), await jobListing.save();
+    if (action === "Accepted") {
+      await newAcceptByCustomer.save();
+    }
+
+    jobListing.status = action || "Accepted";
+    await jobListing.save();
 
     return res
       .status(200)

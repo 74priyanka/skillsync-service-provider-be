@@ -4,12 +4,12 @@ const bcrypt = require("bcrypt");
 const customerProfileSchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: true,
+    required: true,
   },
 
   userName: {
     type: String,
-    required: true,
+    // required: true,
   },
   password: {
     type: String,
@@ -22,7 +22,7 @@ const customerProfileSchema = new mongoose.Schema({
   },
   contact: {
     type: String,
-    // required: true,
+    required: true,
   },
   gender: {
     type: String,

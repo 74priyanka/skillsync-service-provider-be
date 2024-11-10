@@ -13,18 +13,15 @@ router.post("/register", async (req, res) => {
 
     //save the new profile to the database
     const response = await newCustomerProfile.save();
-    console.log(" customer profile data is saved");
 
     //payload
     const payload = {
       id: response.id,
-      userName: response.userName,
+      name: response.name,
     };
 
-    console.log(JSON.stringify(payload));
     //generate a token using the payload
     const token = generateToken(payload);
-    console.log("token is:", token);
 
     res.status(200).json({ response: response, token: token });
   } catch (err) {
@@ -36,41 +33,40 @@ router.post("/register", async (req, res) => {
 //SIGNUP api
 router.post("/signup", async (req, res) => {
   try {
-    const { userName, email, password } = req.body;
+    const { name, email, password, contact } = req.body;
 
     // Validate the input
-    if (!userName || !email || !password) {
+    if (!name || !email || !password || !contact) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    // Check if the username or email already exists
+    // Check if the name or email already exists
     const existingProfile = await customerProfile.findOne({
-      $or: [{ userName }, { email }],
+      $or: [{ name }, { email }],
     });
     if (existingProfile) {
-      return res.status(400).json({ error: "Username or email already taken" });
+      return res.status(400).json({ error: "name or email already taken" });
     }
 
     // Create a new profile document
     const newCustomerProfile = new customerProfile({
-      userName,
+      name,
       email,
       password,
+      contact, // Include the contact field
     });
 
     // Save the new profile to the database
     const response = await newCustomerProfile.save();
-    console.log("Profile data is saved");
 
     // Payload for token generation
     const payload = {
       id: response.id,
-      userName: response.userName,
+      name: response.name,
     };
 
     // Generate a token using the payload
     const token = generateToken(payload);
-    console.log("Token is:", token);
 
     res.status(201).json({ response: response, token: token });
   } catch (err) {
@@ -82,7 +78,7 @@ router.post("/signup", async (req, res) => {
 //LOGIN ROUTE
 router.post("/login", async (req, res) => {
   try {
-    //extract username and password from request body
+    //extract name and password from request body
     const { email, password } = req.body;
 
     //find user by email
@@ -104,7 +100,6 @@ router.post("/login", async (req, res) => {
     };
     //generate a token using the payload
     const token = generateToken(payload);
-    console.log("token is:", token);
     res
       .status(200)
       .json({ token: token, customerProfileId: customersProfile.id });
@@ -128,7 +123,6 @@ router.post("/logout", async (req, res) => {
 router.get("/profile", jwtAuthMiddleware, async (req, res) => {
   try {
     const userData = req.user;
-    console.log("user data : ", userData);
 
     const userId = userData.id;
     const user = await customerProfile.findById(userId);
@@ -162,7 +156,6 @@ router.get("/getCustomerProfile", async (req, res) => {
   try {
     //get the profile from database
     const data = await customerProfile.find();
-    console.log("profile data is fetched");
     res.status(200).json(data);
   } catch (err) {
     console.log(err);
@@ -187,7 +180,6 @@ router.put("/updateProfile/:id", async (req, res) => {
     if (!response) {
       return res.status(404).json({ error: " customer profile not found" });
     }
-    console.log("customer profile data is updated");
     res.status(200).json(response);
   } catch (err) {
     console.log(err);
@@ -205,7 +197,6 @@ router.delete("/deleteProfile/:id", async (req, res) => {
     if (!response) {
       return res.status(404).json({ error: "customer profile not found" });
     }
-    console.log(" customer profile data is deleted");
     res.status(200).json({
       message: " customer profile deleted successfully",
     });

@@ -6,7 +6,6 @@ const JobListing = require("../../models/workers/JobListing");
 //GET route for fetching accepted job posts
 router.get("/fetchAllAcceptedJobPostings/:workerId", async (req, res) => {
   const { workerId } = req.params;
-  console.log("worker id : ", workerId);
   try {
     //fetch accepted job posts
     const acceptedJobPosts = await acceptByCustomer.find({

@@ -5,12 +5,12 @@ const bcrypt = require("bcrypt");
 const profileSchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: true,
+    required: true,
   },
 
   userName: {
     type: String,
-    required: true,
+    // required: true,
   },
   password: {
     type: String,
@@ -29,7 +29,7 @@ const profileSchema = new mongoose.Schema({
   },
   contact: {
     type: String,
-    // required: true,
+    required: true,
   },
 
   nationality: {
@@ -64,8 +64,19 @@ const profileSchema = new mongoose.Schema({
 
   skills: {
     type: [String],
-    enum: ["pipe installation", "faucet repair", "plumbing"],
-    // required: true,
+    enum: [
+      "Plumbing",
+      "Electrical Repairs",
+      "Gardening",
+      "Carpentry",
+      "Pest Control",
+      "Appliance Repair",
+      "Painting",
+      "Furniture Assembly",
+      "Pet Sitting",
+      "Home Cleaning",
+    ],
+    required: true,
   },
   certifications: {
     type: [String],

@@ -6,6 +6,10 @@ const acceptByWorkerSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
+  service_request_name: {
+    type: String,
+    required: true,
+  },
   service_request_id: {
     type: String,
     required: true,
@@ -24,11 +28,7 @@ const acceptByWorkerSchema = new mongoose.Schema({
   },
   accepted_by_worker_skills: {
     type: [String],
-    // required: true,
-  },
-  accepted_by_worker_certifications: {
-    type: [String],
-    // required: true,
+    required: true,
   },
 });
 

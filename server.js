@@ -19,12 +19,12 @@ const actionRequiredByWorkerRoutes = require("./routes/workers/actionRequiredByW
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3001/", // Replace with your frontend domain
+    origin: "http://localhost:3000/", // Replace with your frontend domain
   })
 );
 app.use(bodyParser.json()); //req.body
 require("dotenv").config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 app.get("/", (req, res) => {
   res.send("api is working");
@@ -44,5 +44,5 @@ app.use("/customers", serviceRequestsRoutes);
 app.use("/", acceptByCustomerRoutes);
 app.use("/", actionRequiredByWorkerRoutes);
 app.listen(PORT, () => {
-  console.log("server is running on port 3000");
+  console.log("server is running on port 3001");
 });

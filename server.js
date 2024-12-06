@@ -19,7 +19,7 @@ const actionRequiredByWorkerRoutes = require("./routes/workers/actionRequiredByW
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000/", // Replace with your frontend domain
+    origin: "https://skillsync-fe.onrender.com/", // Replace with your frontend domain
   })
 );
 app.use(bodyParser.json()); //req.body
